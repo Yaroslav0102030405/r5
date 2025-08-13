@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { Routes, Route, NavLink } from "react-router-dom";
 import "./App.css";
 import Button from "./components/Button/Button";
 import MainLayout from "./components/layout/MainLayout";
 import Users from "./services/users/Users";
 import Modal from "./components/Modal/Modal";
 import Tabs from "./components/Tabs/Tabs";
+import Home from "./pages/Home/Home";
+import Authors from "./pages/Home/Authors";
+import Books from "./pages/Home/Books";
 
 const tabData = [
   {
@@ -109,6 +113,39 @@ function App() {
   };
   return (
     <>
+      <nav>
+        <ul>
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/authors"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Authors
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/books"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Books
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path="/authors" element={<Authors />} />
+        <Route path="/books" element={<Books />} />
+      </Routes>
       <Tabs tabs={tabData} />
       <button onClick={handleShowModal}>Відкрити модалку</button>
       {showModal && (
