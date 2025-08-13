@@ -4,6 +4,22 @@ import Button from "./components/Button/Button";
 import MainLayout from "./components/layout/MainLayout";
 import Users from "./services/users/Users";
 import Modal from "./components/Modal/Modal";
+import Tabs from "./components/Tabs/Tabs";
+
+const tabData = [
+  {
+    label: "Вкладка 1",
+    content: <div>Вміст першої вкладки.</div>,
+  },
+  {
+    label: "Вкладка 2",
+    content: <div>Вміст другої вкладки.</div>,
+  },
+  {
+    label: "Вкладка 3",
+    content: <div>Вміст третьої вкладки.</div>,
+  },
+];
 
 interface Color {
   label: string;
@@ -93,6 +109,7 @@ function App() {
   };
   return (
     <>
+      <Tabs tabs={tabData} />
       <button onClick={handleShowModal}>Відкрити модалку</button>
       {showModal && (
         <Modal onClose={handleShowModal}>
