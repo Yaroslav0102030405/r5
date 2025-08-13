@@ -3,6 +3,7 @@ import "./App.css";
 import Button from "./components/Button/Button";
 import MainLayout from "./components/layout/MainLayout";
 import Users from "./services/users/Users";
+import Modal from "./components/Modal/Modal";
 
 interface Color {
   label: string;
@@ -18,6 +19,7 @@ interface FormData {
 const color = [{ label: "red" }, { label: "green" }, { label: "blue" }];
 
 function App() {
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [fomrData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -85,8 +87,20 @@ function App() {
       console.log("Помилка валідації форми:", errors);
     }
   };
+
+  const handleShowModal = () => {
+    setShowModal(!showModal);
+  };
   return (
     <>
+      <button onClick={handleShowModal}>Відкрити модалку</button>
+      {showModal && (
+        <Modal onClose={handleShowModal}>
+          <h2>Модальне вікно</h2>
+          <p>Це приклад модального вікна</p>
+          <button onClick={handleShowModal}>Закрити модалку</button>
+        </Modal>
+      )}
       <h1>Дані з бекенду</h1>
       <MainLayout>
         <Users />
