@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { useState } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 import "./App.css";
@@ -6,9 +7,15 @@ import MainLayout from "./components/layout/MainLayout";
 import Users from "./services/users/Users";
 import Modal from "./components/Modal/Modal";
 import Tabs from "./components/Tabs/Tabs";
-import Home from "./pages/Home/Home";
-import Authors from "./pages/Home/Authors";
-import Books from "./pages/Home/Books";
+// import Home from "./pages/Home/Home";
+// import Authors from "./pages/Home/Authors";
+// import Books from "./pages/Home/Books";
+// import User from "./pages/Home/User";
+
+const Home = lazy(() => import("./pages/Home/Home"));
+const Authors = lazy(() => import("./pages/Home/Authors"));
+const Books = lazy(() => import("./pages/Home/Books"));
+const User = lazy(() => import("./pages/Home/User"));
 
 const tabData = [
   {
@@ -133,7 +140,7 @@ function App() {
           </li>
           <li>
             <NavLink
-              to="/books"
+              to="/users"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
               Books
@@ -141,11 +148,14 @@ function App() {
           </li>
         </ul>
       </nav>
-      <Routes>
-        <Route index element={<Home />} />
-        <Route path="/authors" element={<Authors />} />
-        <Route path="/books" element={<Books />} />
-      </Routes>
+      <Suspense fallback={<h2>...Загружаємо</h2>}>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="/authors" element={<Authors />} />
+          <Route path="/users" element={<Books />} />
+          <Route path="/users/:id" element={<User />} />
+        </Routes>
+      </Suspense>
       <Tabs tabs={tabData} />
       <button onClick={handleShowModal}>Відкрити модалку</button>
       {showModal && (

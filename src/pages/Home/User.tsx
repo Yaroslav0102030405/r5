@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 interface User {
@@ -24,21 +25,26 @@ interface User {
     bs: string;
   };
 }
+const User = () => {
+  const { id } = useParams<{ id: string }>();
 
-const Books = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUser = async () => {
       try {
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          `https://jsonplaceholder.typicode.com/users/${id}`
         );
 
-        const data: User[] = await response.json();
-        setUsers(data);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data: User = await response.json();
+        setUser(data);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
@@ -50,8 +56,10 @@ const Books = () => {
       }
     };
 
-    fetchUsers();
-  }, []);
+    if (id) {
+      fetchUser();
+    }
+  }, [id]);
 
   if (loading) {
     return <div>... Завантаження</div>;
@@ -61,21 +69,23 @@ const Books = () => {
     return <div>Помилка: {error}</div>;
   }
 
+  if (!user) {
+    return <div>Користувача не знайдено.</div>;
+  }
   return (
     <>
-      <h1>Сторінка всіх книги</h1>
-
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>
-              <h3>{user.name}</h3>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Link to="/users">Назад</Link>
+      <h1>Сторінка користувача {id}</h1>
+      <div>
+        <h3>Ім'я: {user.name}</h3>
+        <p>Email: {user.email}</p>
+        <p>Вебсайт: {user.website}</p>
+        <p>
+          Адреса: {user.address.street}, {user.address.city}
+        </p>
+      </div>
     </>
   );
 };
 
-export default Books;
+export default User;
