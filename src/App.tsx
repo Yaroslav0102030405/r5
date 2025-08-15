@@ -7,10 +7,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Users from "./services/users/Users";
 import Modal from "./components/Modal/Modal";
 import Tabs from "./components/Tabs/Tabs";
-// import Home from "./pages/Home/Home";
-// import Authors from "./pages/Home/Authors";
-// import Books from "./pages/Home/Books";
-// import User from "./pages/Home/User";
+import NotFoundPage from "./pages/Home/NotFoundPage";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Authors = lazy(() => import("./pages/Home/Authors"));
@@ -118,6 +115,15 @@ function App() {
   const handleShowModal = () => {
     setShowModal(!showModal);
   };
+
+  const AppRouters = {
+    HOME: "/",
+    AUTHORS: "/authors",
+    USERS: "/users",
+    USERSID: "/users/:id",
+    NOT_FOUND: "*",
+  };
+
   return (
     <>
       <nav>
@@ -151,9 +157,10 @@ function App() {
       <Suspense fallback={<h2>...Загружаємо</h2>}>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/authors" element={<Authors />} />
-          <Route path="/users" element={<Books />} />
-          <Route path="/users/:id" element={<User />} />
+          <Route path={AppRouters.AUTHORS} element={<Authors />} />
+          <Route path={AppRouters.USERS} element={<Books />} />
+          <Route path={AppRouters.USERSID} element={<User />} />
+          <Route path={AppRouters.NOT_FOUND} element={<NotFoundPage />} />
         </Routes>
       </Suspense>
       <Tabs tabs={tabData} />
