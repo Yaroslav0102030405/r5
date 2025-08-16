@@ -18,30 +18,6 @@ const User = lazy(() => import("./pages/Home/User"));
 // Імпортуємо інтерфейс User з нового файлу
 import type { User } from "./types/types";
 
-// interface User {
-//   id: number;
-//   name: string;
-//   username: string;
-//   email: string;
-//   address: {
-//     street: string;
-//     suite: string;
-//     city: string;
-//     zipcode: string;
-//     geo: {
-//       lat: string;
-//       lng: string;
-//     };
-//   };
-//   phone: string;
-//   website: string;
-//   company: {
-//     name: string;
-//     catchPhrase: string;
-//     bs: string;
-//   };
-// }
-
 const tabData = [
   {
     label: "Вкладка 1",
