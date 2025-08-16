@@ -2,30 +2,37 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-const User = () => {
+// Імпортуємо інтерфейс User з нового файлу
+import type { User } from "../../types/types";
+// interface User {
+//   id: number;
+//   name: string;
+//   username: string;
+//   email: string;
+//   address: {
+//     street: string;
+//     suite: string;
+//     city: string;
+//     zipcode: string;
+//     geo: {
+//       lat: string;
+//       lng: string;
+//     };
+//   };
+//   phone: string;
+//   website: string;
+//   company: {
+//     name: string;
+//     catchPhrase: string;
+//     bs: string;
+//   };
+// }
+
+const User = ({
+  setUserName,
+}: {
+  setUserName: (name: string | undefined) => void;
+}) => {
   const { id } = useParams<{ id: string }>();
 
   const [user, setUser] = useState<User | null>(null);
@@ -60,6 +67,16 @@ const User = () => {
       fetchUser();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+    } else {
+      setUserName(undefined);
+    }
+    // Очищаємо стан, коли компонент розмонтовується
+    return () => setUserName(undefined);
+  }, [user, setUserName]);
 
   if (loading) {
     return <div>... Завантаження</div>;

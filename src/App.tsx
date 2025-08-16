@@ -8,11 +8,39 @@ import Users from "./services/users/Users";
 import Modal from "./components/Modal/Modal";
 import Tabs from "./components/Tabs/Tabs";
 import NotFoundPage from "./pages/Home/NotFoundPage";
+import PageTitleUpdate from "./pages/Home/PageTitleUpdate";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Authors = lazy(() => import("./pages/Home/Authors"));
 const Books = lazy(() => import("./pages/Home/Books"));
 const User = lazy(() => import("./pages/Home/User"));
+
+// Імпортуємо інтерфейс User з нового файлу
+import type { User } from "./types/types";
+
+// interface User {
+//   id: number;
+//   name: string;
+//   username: string;
+//   email: string;
+//   address: {
+//     street: string;
+//     suite: string;
+//     city: string;
+//     zipcode: string;
+//     geo: {
+//       lat: string;
+//       lng: string;
+//     };
+//   };
+//   phone: string;
+//   website: string;
+//   company: {
+//     name: string;
+//     catchPhrase: string;
+//     bs: string;
+//   };
+// }
 
 const tabData = [
   {
@@ -43,6 +71,7 @@ interface FormData {
 const color = [{ label: "red" }, { label: "green" }, { label: "blue" }];
 
 function App() {
+  const [userName, setUserName] = useState<string | undefined>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fomrData, setFormData] = useState<FormData>({
     name: "",
@@ -154,12 +183,16 @@ function App() {
           </li>
         </ul>
       </nav>
+      <PageTitleUpdate userName={userName} />
       <Suspense fallback={<h2>...Загружаємо</h2>}>
         <Routes>
           <Route index element={<Home />} />
           <Route path={AppRouters.AUTHORS} element={<Authors />} />
           <Route path={AppRouters.USERS} element={<Books />} />
-          <Route path={AppRouters.USERSID} element={<User />} />
+          <Route
+            path={AppRouters.USERSID}
+            element={<User setUserName={setUserName} />}
+          />
           <Route path={AppRouters.NOT_FOUND} element={<NotFoundPage />} />
         </Routes>
       </Suspense>
